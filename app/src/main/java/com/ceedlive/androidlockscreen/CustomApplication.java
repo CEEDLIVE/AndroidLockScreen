@@ -1,7 +1,12 @@
 package com.ceedlive.androidlockscreen;
 
+import android.annotation.TargetApi;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.android.gms.ads.MobileAds;
@@ -27,9 +32,10 @@ public class CustomApplication extends Application {
 
         // TODO
 
-        Log.i("CEEDLIVE", "CustomApplication > onCreate");
+        CustomLog.info("CustomApplication > onCreate");
 
         Screen.init(this);
+        createDefaultNotificationChannel();
 
         // MobileAds 클래스의 정적 메소드 initialize()에 제공된 두 번째 인수는 Ad Mob에 가입할 때 얻은 Ad Mob 애플리케이션 ID 여야 합니다.
         // 이 경우 데모 용도로 Google에서 제공하는 공개 애플리케이션 ID를 사용하고 있습니다.
@@ -47,10 +53,11 @@ public class CustomApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.i("CEEDLIVE", "CustomApplication > attachBaseContext");
+        CustomLog.info("CustomApplication > attachBaseContext");
     }
 
     private void clearApplicationCache(File cacheDir) {
+        CustomLog.info("CustomApplication > clearApplicationCache");
         File dir = cacheDir;
         if (dir == null) {
             dir = cacheDir;
@@ -71,4 +78,27 @@ public class CustomApplication extends Application {
             Log.e("e.toString()", e.toString());
         }
     }
+
+    // @RequiresApi 는 해당 함수가 해당 버전에서만 호출 되어야 한다는 것을 IDE 에 알리는 역할을 합니다.
+    // 따라서 해당 어노테이션이 지정된 함수를 호출 하는 경우 에러가 발생하게 됩니다.
+    // 버전에 따라 Warning 이 발생 하는 경우도 있을 수 있습니다.
+
+    // @TargetApi 는 해당 함수가 해당 버전에서만 호출 된다는 것을 IDE 에 알리는 역할을 합니다.
+    // 따라서 호출 하는 쪽에서는 어떠한 피드백도 없는 것을 볼 수 있습니다.
+    @TargetApi(Build.VERSION_CODES.O)
+    private void createDefaultNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final String id = "LockScreenService";
+            final String name = "LockScreen Service";
+            final int priority = NotificationManager.IMPORTANCE_MIN;
+            final String description = "LockScreen Service";
+
+            final NotificationChannel notificationChannel = new NotificationChannel(id, name, priority);
+            notificationChannel.setShowBadge(false);
+            notificationChannel.setDescription(description);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(notificationChannel);
+        }
+    }
+
 }

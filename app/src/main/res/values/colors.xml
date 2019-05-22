@@ -20,4 +20,9 @@
     <color name="waveMainColor">#640f9ce8</color>
     <color name="wavesubColor">#3251b0e4</color>
     <color name="transparent">#00000000</color>
+
+    <color name="color_ffffffff">#ffffffff</color>
+    <color name="color_fffee661">#fffee661</color>
+    <color name="color_90000000">#90000000</color>
+
 </resources>

@@ -23,7 +23,7 @@ public class LockScreenService extends Service {
 
 
     public LockScreenService() {
-
+        CustomLog.info("LockScreenService: 생성자");
     }
 
     /**
@@ -45,6 +45,8 @@ public class LockScreenService extends Service {
         // 이 메소드에서 IBinder를 반환해서 서비스와 컴포넌트가 통신하는데 사용하는 인터페이스를 제공해야 합니다.
         // 만약 시작 타입의 서비스를 구현한다면 null 을 반환하면 됩니다.
 
+        CustomLog.info("LockScreenService > onBind: Service 객체와 (화면단 Activity 사이에서) 통신(데이터를 주고받을) 때 사용하는 메서드");
+
         return null;
     }
 
@@ -53,6 +55,18 @@ public class LockScreenService extends Service {
     // Thread 는 앱이 사용자와 상호작용하는 과정에서 UI Thread 가 Block 되지 않기 위한 작업등을 처리하기 위한 Foreground 작업에 적합하고
     // Service 는 앱이 사용자와 상호작용하지 않아도 계속 수행되어야 하는 Background 작업에 적합하다고 볼 수 있다.
     // 물론 Service 내부에서 Thread 가 사용되어야 하지만 큰 틀에서 봤을 때 위와 같은 개념으로 나눌 수 있을 것이다.
+
+    // 백그라운드 서비스
+    // 시스템이 리소스가 부족한 경우 임의로 중단할 수 있음
+    // onStartCommand()에서 종료시 다음 동작을 정의
+    // START_NOT_STICKY : 서비스 재 실행하지 안함
+    // START_STICKY : 재생성과 onStartCommand() 호출 (null intent)
+    // START_REDELIVER_INTENT : 재생성과 onStartCommand() 호출 (same intent)
+    // 포그라운드 서비스
+    // 서비스의 동작을 사용자가 명시적으로 인지하는 대신 메모리 부족시 시스템에 의한 종료 대상에서 제외됨
+    // 상태바에 진행중(on-going)이라는 알림이 표시
+
+    // reference: https://academy.realm.io/kr/posts/android-forground-service-cashslide/
 
     /**
      * 시작 서비스를 구현하고 비동기 태스크 실행을 초기화하기 위한 중요한 메서드
@@ -76,15 +90,18 @@ public class LockScreenService extends Service {
         // 다른 컴포넌트가 startService()를 호출해서 서비스가 시작되면 이 메소드가 호출됩니다.
         // 만약 연결된 타입의 서비스를 구현한다면 이 메소드는 재정의 할 필요가 없습니다.
 
-        Log.i("CEEDLIVE", "LockScreenService > onStartCommand: flags:" + flags + " startId: " + startId);
-        return super.onStartCommand(intent, flags, startId);
+        CustomLog.info("LockScreenService > onStartCommand: flags:" + flags + " startId: " + startId);
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("CEEDLIVE", "LockScreenService > onCreate");
+        CustomLog.info("LockScreenService > onCreate");
+        CustomLog.info("LockScreenService > onCreate: Build.VERSION.SDK_INT - " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CustomLog.info("LockScreenService > onCreate: Build.VERSION.SDK_INT >= Build.VERSION_CODES.O");
             startForegroundNotification();
         }
 
@@ -99,16 +116,19 @@ public class LockScreenService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("CEEDLIVE", "LockScreenService > onDestroy");
+        CustomLog.info("LockScreenService > onDestroy");
         if (this.mLockScreenReceiver != null) {
+            CustomLog.info("LockScreenService > onDestroy: this.unregisterReceiver(this.mLockScreenReceiver)");
             this.unregisterReceiver(this.mLockScreenReceiver);
         }
         if (this.mBroadcastReceiver != null) {
+            CustomLog.info("LockScreenService > onDestroy: this.unregisterReceiver(this.mBroadcastReceiver)");
             this.unregisterReceiver(this.mBroadcastReceiver);
         }
     }
 
     private void startForegroundNotification() {
+        CustomLog.info("LockScreenService > startForegroundNotification");
         this.startForeground(5001, this.buildNotification());
     }
 
@@ -117,12 +137,17 @@ public class LockScreenService extends Service {
      * @return
      */
     private Notification buildNotification() {
-        Log.i("CEEDLIVE", "LockScreenService > buildNotification");
+        CustomLog.info("LockScreenService > buildNotification");
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 && !Locker.getInstance().h().isShowAlways()) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            // ? 아이콘과 타이틀을 설정하지 않으면 표시되지 않음
+            CustomLog.info("Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2");
             return new Notification();
         } else {
+            // ? 동일한 NOTIFY_ID로 알림을 한번 더 요청하면 표시되지 않음
+            CustomLog.info("Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2");
             try {
+                // @Override 한 build 메서드 실행
                 return Locker.getInstance().getServiceNotificationInterface().build();
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -135,12 +160,12 @@ public class LockScreenService extends Service {
      *
      */
     private void registerLockScreenReceiver() {
-        Log.i("CEEDLIVE", "LockScreenService > registerLockScreenReceiver");
+        CustomLog.info("LockScreenService > registerLockScreenReceiver");
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.SCREEN_OFF");
         intentFilter.addAction("android.intent.action.SCREEN_ON");
-        intentFilter.setPriority(1);
+        intentFilter.setPriority(Integer.MAX_VALUE);
         this.mLockScreenReceiver = new LockScreenReceiver();
         this.registerReceiver(this.mLockScreenReceiver, intentFilter);
     }
@@ -149,21 +174,23 @@ public class LockScreenService extends Service {
      *
      */
     private void registerIdleModeChangedReceiver() {
-        Log.i("CEEDLIVE", "LockScreenService > registerIdleModeChangedReceiver");
+        CustomLog.info("LockScreenService > registerIdleModeChangedReceiver");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.mBroadcastReceiver = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
-                    Log.i("CEEDLIVE", "LockScreenService > registerIdleModeChangedReceiver: intent.getAction() - " + intent.getAction());
+                    CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: intent.getAction() - " + intent.getAction());
                     if ( "android.os.action.DEVICE_IDLE_MODE_CHANGED".equals( intent.getAction() ) ) {
                         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                        if ( powerManager.isDeviceIdleMode() ) {
-                            Log.i("CEEDLIVE", "LockScreenService > registerIdleModeChangedReceiver: IDLE");
-                        } else {
-                            Log.i("CEEDLIVE", "LockScreenService > registerIdleModeChangedReceiver: NOT IDLE");
-//                                if (!DeviceUtils.isScreenOn(var3)) {
-//                                    Locker.getInstance().getCampaignPool().a((Map)null);
-//                                }
+                        if (powerManager != null) {
+                            if ( powerManager.isDeviceIdleMode() ) {
+                                CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: IDLE");
+                            } else {
+                                CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: NOT IDLE");
+    //                                if (!DeviceUtils.isScreenOn(var3)) {
+    //                                    Locker.getInstance().getCampaignPool().a((Map)null);
+    //                                }
+                            }
                         }
                     }
                 }

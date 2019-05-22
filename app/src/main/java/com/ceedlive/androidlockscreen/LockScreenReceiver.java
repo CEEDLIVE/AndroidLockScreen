@@ -4,7 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
-import android.util.Log;
+
+import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
+import static android.telephony.TelephonyManager.CALL_STATE_OFFHOOK;
+import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
 
 public class LockScreenReceiver extends BroadcastReceiver {
 
@@ -18,28 +21,37 @@ public class LockScreenReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         boolean isPhoneIdle = true;
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        int callState = telephonyManager.getCallState();
+        int callState = 0;
+        if (telephonyManager != null) {
+            callState = telephonyManager.getCallState();
+        }
         switch (callState) {
-            case TelephonyManager.CALL_STATE_IDLE:
+            case CALL_STATE_IDLE:
                 isPhoneIdle = true;// 정상
                 break;
-            case TelephonyManager.CALL_STATE_RINGING:
+            case CALL_STATE_RINGING:
                 isPhoneIdle = false;// 전화벨이 울리는 경우
                 break;
-            case TelephonyManager.CALL_STATE_OFFHOOK:
+            case CALL_STATE_OFFHOOK:
                 isPhoneIdle = false;// 통화중
                 break;
         }
-        Log.i("CEEDLIVE", "LockScreenReceiver > onReceive: isPhoneIdle - " + isPhoneIdle);
+
+        CustomLog.info("LockScreenReceiver > onReceive: isPhoneIdle - " + isPhoneIdle);
+        CustomLog.info("LockScreenReceiver > onReceive: intent.getAction() - " + intent.getAction());
 
         if ( "android.intent.action.SCREEN_OFF".equals( intent.getAction() ) ) {
-            Log.i("CEEDLIVE", "LockScreenReceiver > onReceive: ACTION_SCREEN_OFF");
+            CustomLog.info("LockScreenReceiver > onReceive: ACTION_SCREEN_OFF");
             Locker.getInstance().handleScreenOff();
+            CustomLog.info("LockScreenReceiver > onReceive: isPhoneIdle - " + isPhoneIdle);
             if (isPhoneIdle) {
-                Locker.getInstance().showLocker();
+//                Locker.getInstance().showLocker();
+                Intent i = new Intent(context, LockScreenActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         } else if ( "android.intent.action.SCREEN_ON".equals( intent.getAction() ) ) {
-            Log.i("CEEDLIVE", "LockScreenReceiver > onReceive: ACTION_SCREEN_ON");
+            CustomLog.info("LockScreenReceiver > onReceive: ACTION_SCREEN_ON");
             Locker.getInstance().handleScreenOn();
         }
 

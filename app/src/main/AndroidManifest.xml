@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:resizeableActivity="false"
         >
 
         <meta-data
@@ -24,22 +25,40 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id_test" />
 
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="action"
+                    android:scheme="androidlockscreenapp"/>
+            </intent-filter>
+        </activity>
 
-        <activity android:name=".LockScreenActivity"
+        <activity
+            android:name=".LockScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/LockScreenTheme"
             />
+
+        <!-- excludeFromRecents="true" 잠금화면은 깔끔하게 사라져야 한다. -->
+        <!-- launchMode="singleTask" 폰에서 잠금화면은 보통 세로모드이다. -->
+        <!-- screenOrientation="portrait" 폰에서 잠금화면은 보통 세로모드이다. -->
 
         <service android:name=".LockScreenService" />
     </application>
