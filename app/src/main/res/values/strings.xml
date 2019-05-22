@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">AndroidLockScreen</string>
+
+    <string name="admob_app_id_test">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id">ca-app-pub-3687086103436819/5801984965</string>
+
+    <!-- 샘플 광고 단위 -->
+    <!-- 배너 광고 -->
+    <string name="admob_banner_id_test1">ca-app-pub-3940256099942544/6300978111</string>
+    <!-- 전면 광고 -->
+    <string name="admob_banner_id_test2">ca-app-pub-3940256099942544/1033173712</string>
+    <!-- 전면 동영상 광고 -->
+    <string name="admob_banner_id_test3">ca-app-pub-3940256099942544/8691691433</string>
+    <!-- 보상형 동영상 광고 -->
+    <string name="admob_banner_id_test4">ca-app-pub-3940256099942544/5224354917</string>
+    <!-- 네이티브 광고 고급형 -->
+    <string name="admob_banner_id_test5">ca-app-pub-3940256099942544/2247696110</string>
+    <!-- 네이티브 동영상 광고 고급형 -->
+    <string name="admob_banner_id_test6">ca-app-pub-3940256099942544/1044960115</string>
+
+
+    <string name="todayGoal">마신물</string>
+    <string name="monday">월요일</string>
+    <string name="tuesday">화요일</string>
+    <string name="wednesday">수요일</string>
+    <string name="thursday">목요일</string>
+    <string name="friday">금요일</string>
+    <string name="saturday">토요일</string>
+    <string name="sunday">일요일</string>
+    <string name="water_tracker">water tracker</string>
+    <string name="inputMyTargetText">나의 목표 섭취량</string>
+    <string name="startConfirm">시작하기</string>
+    <string name="todayWaterText">목표량</string>
+    <string name="leftWater">남은양</string>
+    <string name="settingText">환경설정</string>
+    <string name="locksreenText">잠금화면</string>
+    <string name="lockscrenOff">잠금화면을 껐습니다.</string>
+    <string name="lockscrenOn">잠금화면을 켰습니다.</string>
+    <string name="unlock">잠금해제</string>
+    <string name="hour">시</string>
+    <string name="min">분</string>
+    <string name="day">일</string>
+    <string name="month">월</string>
+    <string name="waterHistory">History</string>
+    <string name="selectBackground">배경사진을 선택해주세요!</string>
+    <string name="gallery">내 사진첩</string>
+    <string name="storagePermissionDenied">사진 접근 권한 거절</string>
+    <string name="storagePermissionNeverask">사진 접근 권한 거절</string>
+    <string name="backgroundImage">backgroundImage</string>
+    <string name="addWaterButton">addWaterButton</string>
+    <string name="waterAlarm">Alarm</string>
+    <string name="prepareAlarmService">알람 서비스를 준비중입니다.</string>
+    <string name="selectMyWaterType">한번 마실 물의 양</string>
+    <string name="prepareCustomWaterService">커스텀 단위 서비스를 준비중입니다.</string>
+    <string name="inputGoals">200ml 이상 섭취량을 입력해주십시오.</string>
+    <string name="inputMyTargetTextHint">200ml 이상의 목표 섭취량을 입력해 주세요.</string>
+    <string name="myWaterText">MyWater</string>
+    <string name="soundsText">버튼 소리</string>
+    <string name="vibrateText">버튼 진동</string>
+    <string name="lockscreenSettingTitle">잠금화면 설정</string>
+    <string name="lockscrenSoundsOn">버튼 클릭 소리 ON!</string>
+    <string name="lockscrenSoundsOff">버튼 클릭 소리 OFF!</string>
+    <string name="lockscrenVibrateOn">버튼 클릭 진동 ON!</string>
+    <string name="lockscrenVibrateOff">버튼 클릭 진동 OFF!</string>
+    <string name="versionInfoText">버전 정보</string>
+</resources>
