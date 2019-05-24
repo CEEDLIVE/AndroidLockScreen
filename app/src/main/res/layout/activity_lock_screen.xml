@@ -27,10 +27,9 @@
         android:background="@drawable/bg_percent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -48,7 +47,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.25" />
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,14 +57,14 @@
             app:layout_constraintBottom_toTopOf="@id/timeGuideline" >
 
             <TextView
-                android:id="@+id/lockscreenTime"
+                android:id="@+id/lockScreenTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
                 android:textSize="55sp" />
 
             <TextView
-                android:id="@+id/lockscreenDate"
+                android:id="@+id/lockScreenDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
@@ -75,17 +73,17 @@
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/addWaterEffectFrame"
+            android:id="@+id/lockScreenAddWaterEffectFrame"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
-            app:layout_constraintTop_toTopOf="@id/waterProgressbarFrame"
+            app:layout_constraintTop_toTopOf="@id/lockScreenWaterProgressbarFrame"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <FrameLayout
-            android:id="@+id/waterProgressbarFrame"
+            android:id="@+id/lockScreenWaterProgressbarFrame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -108,7 +106,7 @@
 
                     <!-- android:src="@drawable/water_type_01" -->
                     <ImageView
-                        android:id="@+id/waterTypeImage"
+                        android:id="@+id/lockScreenWaterTypeImage"
                         android:src="@drawable/click_water_alarm"
                         android:scaleType="centerCrop"
                         android:layout_width="60dp"
@@ -116,7 +114,7 @@
                         android:contentDescription="waterType" />
 
                     <TextView
-                        android:id="@+id/waterPercent"
+                        android:id="@+id/lockScreenWaterPercent"
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:id="@+id/goalWater"
+                            android:id="@+id/lockScreenGoalWater"
                             android:text="0ml"
                             android:textSize="15sp"
                             android:textColor="@color/whiteColor"
@@ -167,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:id="@+id/todayWater"
+                            android:id="@+id/lockScreenTodayWater"
                             android:text="0ml"
                             android:textSize="15sp"
                             android:textColor="@color/whiteColor"
@@ -194,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:id="@+id/remainWater"
+                            android:id="@+id/lockScreenRemainWater"
                             android:text="0ml"
                             android:textSize="15sp"
                             android:textColor="@color/whiteColor"
@@ -220,7 +218,7 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/waterProgressbar"
+                android:id="@+id/lockScreenWaterProgressbar"
                 android:layout_width="280dp"
                 android:layout_height="280dp"
                 android:layoutDirection="rtl"
@@ -233,7 +231,7 @@
 
             <!-- add_water -->
             <ImageView
-                android:id="@+id/addWaterButton"
+                android:id="@+id/lockScreenAddWaterButton"
                 android:layout_gravity="bottom|center_horizontal"
                 android:src="@drawable/click_water_alarm"
                 android:background="@drawable/bg_percent"
@@ -245,14 +243,14 @@
 
 
         <FrameLayout
-            android:id="@+id/swipeUnLockFrame"
+            android:id="@+id/lockScreenSwipeUnLockFrame"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/bg_lockscreen_swipe"
-            app:layout_constraintBottom_toTopOf="@+id/adView"
+            app:layout_constraintBottom_toTopOf="@+id/lockScreenAdView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" >
 
@@ -269,6 +267,13 @@
                 <!--android:padding="1dp"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="match_parent"/>-->
+
+            <com.ceedlive.androidlockscreen.CustomViewUnLockSwipe
+                android:id="@+id/lockScreenSwipeUnLockButton"
+                android:padding="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
 
         </FrameLayout>
 
@@ -300,7 +305,7 @@
         <!-- android:background="@drawable/transparent" -->
         <com.google.android.gms.ads.AdView
             xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
+            android:id="@+id/lockScreenAdView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/bg_percent"

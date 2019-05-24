@@ -24,6 +24,8 @@ public class Screen {
     private static Screen sScreen;
     private static Notification sNotification;
 
+    private String mAppKey;
+
     private Locker.LifeCycleListener lifeCycleListener = new Locker.LifeCycleListener() {
         public void onStart() {
             super.onStart();
@@ -236,6 +238,10 @@ public class Screen {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public String getAppKey() {
+        return this.mAppKey;
     }
 
 }

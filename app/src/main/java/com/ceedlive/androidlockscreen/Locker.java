@@ -115,6 +115,7 @@ public class Locker {
             // TODO START LISTENER
 
             for (LifeCycleListener lifeCycleListener : this.lifeCycleListenerSet) {
+                CustomLog.info("Locker > start: for each lifeCycleListenerSet onStart");
                 lifeCycleListener.onStart();
             }
         }
@@ -129,6 +130,7 @@ public class Locker {
             // TODO STOP LISTENER
 
             for (LifeCycleListener lifeCycleListener : this.lifeCycleListenerSet) {
+                CustomLog.info("Locker > start: for each lifeCycleListenerSet onStop");
                 lifeCycleListener.onStop();
             }
         }
@@ -155,6 +157,7 @@ public class Locker {
         this.mContext.startActivity(intent);
 
         for (Locker.LifeCycleListener lifeCycleListener : lifeCycleListenerSet) {
+            CustomLog.info("Locker > showLocker: for each lifeCycleListenerSet onShow");
             lifeCycleListener.onShow();
         }
 
@@ -172,6 +175,7 @@ public class Locker {
         CustomLog.info("Locker > handleScreenOff: lifeCycleListenerSet.size(): " + lifeCycleListenerSet.size());
 
         for (Locker.LifeCycleListener lifeCycleListener: lifeCycleListenerSet) {
+            CustomLog.info("Locker > handleScreenOff: for each lifeCycleListenerSet onScreenOff");
             lifeCycleListener.onScreenOff();
         }
 
@@ -189,6 +193,7 @@ public class Locker {
         CustomLog.info("Locker > handleScreenOn: lifeCycleListenerSet.size(): " + lifeCycleListenerSet.size());
 
         for (Locker.LifeCycleListener lifeCycleListener: lifeCycleListenerSet) {
+            CustomLog.info("Locker > handleScreenOn: for each lifeCycleListenerSet onScreenOn");
             lifeCycleListener.onScreenOn();
         }
     }

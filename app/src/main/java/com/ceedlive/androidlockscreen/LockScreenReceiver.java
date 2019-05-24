@@ -1,5 +1,6 @@
 package com.ceedlive.androidlockscreen;
 
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,10 @@ import static android.telephony.TelephonyManager.CALL_STATE_OFFHOOK;
 import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
 
 public class LockScreenReceiver extends BroadcastReceiver {
+
+    private KeyguardManager km = null;
+    private KeyguardManager.KeyguardLock keyLock = null;
+
 
     /**
      * 인텐트를 받으면 onReceive() 메소드가 자동으로 호출 된다.
@@ -40,20 +45,39 @@ public class LockScreenReceiver extends BroadcastReceiver {
         CustomLog.info("LockScreenReceiver > onReceive: isPhoneIdle - " + isPhoneIdle);
         CustomLog.info("LockScreenReceiver > onReceive: intent.getAction() - " + intent.getAction());
 
-        if ( "android.intent.action.SCREEN_OFF".equals( intent.getAction() ) ) {
+        if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
             CustomLog.info("LockScreenReceiver > onReceive: ACTION_SCREEN_OFF");
             Locker.getInstance().handleScreenOff();
             CustomLog.info("LockScreenReceiver > onReceive: isPhoneIdle - " + isPhoneIdle);
             if (isPhoneIdle) {
 //                Locker.getInstance().showLocker();
+
+//                if (km == null) {
+//                    CustomLog.info("LockScreenReceiver > onReceive: KeyguardManager is null");
+//                    km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+//                }
+//
+//                if (keyLock == null) {
+//                    CustomLog.info("LockScreenReceiver > onReceive: newKeyguardLock is null");
+//                    keyLock = km.newKeyguardLock(Context.KEYGUARD_SERVICE);
+//                }
+//
+//                disableKeyguard();
+
                 Intent i = new Intent(context, LockScreenActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
                 context.startActivity(i);
             }
-        } else if ( "android.intent.action.SCREEN_ON".equals( intent.getAction() ) ) {
+        } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             CustomLog.info("LockScreenReceiver > onReceive: ACTION_SCREEN_ON");
             Locker.getInstance().handleScreenOn();
         }
 
     }
+
+    public void disableKeyguard() {
+        // Missing permissions required by KeyguardLock.disableKeyguard: android.permission.DISABLE_KEYGUARD
+        keyLock.disableKeyguard();
+    }
+
 }

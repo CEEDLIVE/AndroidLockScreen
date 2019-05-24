@@ -37,6 +37,8 @@ public class CustomApplication extends Application {
         Screen.init(this);
         createDefaultNotificationChannel();
 
+        CustomSharedPreference.init(this, getPackageName());
+
         // MobileAds 클래스의 정적 메소드 initialize()에 제공된 두 번째 인수는 Ad Mob에 가입할 때 얻은 Ad Mob 애플리케이션 ID 여야 합니다.
         // 이 경우 데모 용도로 Google에서 제공하는 공개 애플리케이션 ID를 사용하고 있습니다.
         // This method should be called as early as possible, and only once per application launch

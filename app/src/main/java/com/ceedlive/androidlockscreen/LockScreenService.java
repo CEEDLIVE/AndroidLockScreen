@@ -1,5 +1,6 @@
 package com.ceedlive.androidlockscreen;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -173,6 +174,7 @@ public class LockScreenService extends Service {
     /**
      *
      */
+    @TargetApi(Build.VERSION_CODES.M)
     private void registerIdleModeChangedReceiver() {
         CustomLog.info("LockScreenService > registerIdleModeChangedReceiver");
 
@@ -187,9 +189,10 @@ public class LockScreenService extends Service {
                                 CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: IDLE");
                             } else {
                                 CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: NOT IDLE");
-    //                                if (!DeviceUtils.isScreenOn(var3)) {
+                                if (!isScreenOn(powerManager)) {
+                                    CustomLog.info("LockScreenService > registerIdleModeChangedReceiver: !isScreenOn(powerManager)");
     //                                    Locker.getInstance().getCampaignPool().a((Map)null);
-    //                                }
+                                }
                             }
                         }
                     }
@@ -199,6 +202,13 @@ public class LockScreenService extends Service {
             intentFilter.addAction("android.os.action.DEVICE_IDLE_MODE_CHANGED");
             this.registerReceiver(this.mBroadcastReceiver, intentFilter);
         }
+    }
+
+    public static boolean isScreenOn(Context context) {
+        return isScreenOn( (PowerManager) context.getSystemService(Context.POWER_SERVICE) );
+    }
+    public static boolean isScreenOn(PowerManager powerManager) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH ? powerManager.isInteractive() : powerManager.isScreenOn();
     }
 
 }
